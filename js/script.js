@@ -29,7 +29,7 @@ const nBox = document.getElementById('difficulty');
 const resetButton = document.getElementById('reset');
 const startButton = document.getElementById('start');
 const BOMBS_NUMBER = 16;
-let bombs = [4, 78, 12, 52, 35];
+let bombs = [];
 let score = 0;
 
  startButton.addEventListener('click', function(){
@@ -66,6 +66,10 @@ function createSquare(maxSquare){
     square.addEventListener("click", function(){
         console.log(this.idElement);
         this.innerHTML = this.idElement;
+        this.classList.add("clicked")
+        score++;
+        const cells = document.getElementsByClassName("square");
+        //controllo bomba
         if (bombs.includes(this.idElement)) {
             console.log('hai perso. Bomba!');
         } else {
@@ -75,10 +79,7 @@ function createSquare(maxSquare){
     container.append(square);
 }
 
-function clickSquare(){
-    console.log(this.idElement);
-    this.innerHTML = this.idElement;
-}
+
 
 function genCalcCss(){
     return `calc(100% / ${elementsPerRow}`;
@@ -98,4 +99,24 @@ function livello(difficultyChosen){
 
 function clickSquare(){
     this.classList.add('square-colore');
+}
+
+function generateBombs(createSquare){
+    //GENERO ID BOMBE E LI SALVO IN UN ARRAY CHE RESTITUISCO
+    const bombsGenerated = [];
+    //CICLO FINO A QUANDO NON GENERA IL NUMERO DI BOMBE NECESSARIE
+    while(bombsGenerated.lenght < BOMBS_NUMBER){
+        const bomb = generateRandomNumber(1, cellNumbers);
+        //SE IL NUMERO NON è PRESENTE NELL'ARRAY
+        if(!bombsGenerated.includes(bomb)){
+            bombsGenerated.push(bomb);
+        }
+    }
+
+    return bombsGenerated;
+
+}
+
+function generateRandomNumber(min,max){
+    return Math.floor(Math.random()* (max - min +1)) + min;
 }
